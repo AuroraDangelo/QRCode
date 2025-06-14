@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random QR Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 350px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        h1 {
+            color: #4a6fa5;
+            margin-bottom: 10px;
+        }
+        
+        .description {
+            color: #777;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        
+        #qrcode {
+            margin: 20px auto;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(118, 75, 162, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .content {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+            word-break: break-all;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        
+        .footer {
+            margin-top: 25px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Random QR Generator</h1>
+        <p class="description">Click the button below to generate a new random QR code</p>
+        
+        <div id="qrcode"></div>
+        
+        <div class="content" id="content">
+            Your random content will appear here
+        </div>
+        
+        <button class="btn" id="generateBtn">Generate QR Code</button>
+        
+        <div class="footer">
+            Scan the QR code with any QR scanner app
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <script>
+        const generateBtn = document.getElementById('generateBtn');
+        const qrcodeDiv = document.getElementById('qrcode');
+        const contentDiv = document.getElementById('content');
+        
+        // Function to generate random text
+        function generateRandomContent() {
+            const types = [
+                () => `https://example.com/${Math.random().toString(36).substring(2, 10)}`,
+                () => `Random text: ${Math.random().toString(36).substring(2, 15)}`,
+                () => `WIFI:S:${Math.random().toString(36).substring(2, 8)};T:WPA2;P:${Math.random().toString(36).substring(2, 10)};;`,
+                () => `BEGIN:VCARD\nVERSION:3.0\nFN:${Math.random().toString(36).substring(2, 8)}\nTEL:${Math.floor(Math.random() * 10000000000)}\nEND:VCARD`,
+                () => `mailto:${Math.random().toString(36).substring(2, 8)}@example.com`,
+                () => `geo:${Math.random() * 180 - 90},${Math.random() * 360 - 180}`
+            ];
+            
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            return randomType();
+        }
+        
+        // Function to generate QR code
+        function generateQRCode(content) {
+            // Clear previous QR code
+            qrcodeDiv.innerHTML = '';
+            contentDiv.textContent = content;
+            
+            // Generate new QR code
+            new QRCode(qrcodeDiv, {
+                text: content,
+                width: 200,
+                height: 200,
+                colorDark: "#4a6fa5",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+        
+        // Initial generation
+        generateQRCode(generateRandomContent());
+        
+        // Button click event
+        generateBtn.addEventListener('click', () => {
+            generateQRCode(generateRandomContent());
+        });
+    </script>
+</body>
+</html>
