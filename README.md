@@ -1,1 +1,1 @@
-# QRCode
+This project is about the generation of the QR code for any random url .Here you just need to click on the button given to generate a new random QR .You can furthur scan it accordingly .Here HTMl,CSS and Javascript has been used to design it .
